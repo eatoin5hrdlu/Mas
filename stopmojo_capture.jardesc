@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jardesc>
+    <jar path="/temp/stopmojo_capture.jar"/>
+    <options overwrite="true" compress="true" exportErrors="true" exportWarnings="true" saveDescription="true" descriptionLocation="/stopmojo/stopmojo_capture.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
+    <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="true" generateManifest="true" manifestLocation="/stopmojo/stopmojo_capture.manifest" mainClassHandleIdentifier="=stopmojo/&lt;com.mondobeyondo.stopmojo.capture{Capture.java[Capture">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
+        <javaElement handleIdentifier="=stopmojo/&lt;images"/>
+        <javaElement handleIdentifier="=stopmojo/&lt;com.mondobeyondo.stopmojo.util"/>
+        <javaElement handleIdentifier="=stopmojo/&lt;com.mondobeyondo.stopmojo.plugin"/>
+        <javaElement handleIdentifier="=stopmojo/&lt;com.mondobeyondo.stopmojo.plugin.capture"/>
+        <javaElement handleIdentifier="=stopmojo/&lt;com.mondobeyondo.stopmojo.capture"/>
+    </selectedElements>
+</jardesc>

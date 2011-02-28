@@ -1,0 +1,28 @@
+#StopMojo Project File
+#Fri Jan 07 13:58:53 EST 2011
+PrevFrameAlpha=0.37
+MainAlpha=0.87
+Version=1.0
+CurFrameNum=1
+ScreenWidth=1280
+ID=StopMojo
+Fps=30.0
+ScreenHeight=1024
+VDivLoc=600
+HDivLoc=640
+CapPlugin=JMFCapture1
+CapDev1=vfw\:Microsoft WDM Image Capture (Win32)\:0~7
+CapPlugin4=QTCapture1
+CapDev5=quicktime.std.sg.SGDataSourceInfo
+CapPlugin2=JMFCapture1
+CapDev4=quicktime.std.sg.SGDataSourceInfo@19106c7
+CapDev2=vfw\:Microsoft WDM Image Capture (Win32)\:0~4
+PrevFrameOffset=-1
+ImageFormat=jpg
+ColorB=0xEAEFF0
+ColorM=0xDAE5E8
+ColorA=0xCBDCE0
+SMTPHOST=mail.ncmls.org
+SMTPUser=MLS\\peterr
+SMTPPassword=le1974a#MAN
+

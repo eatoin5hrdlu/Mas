@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Main-Class: com.mondobeyondo.stopmojo.capture.Capture
+
+
+

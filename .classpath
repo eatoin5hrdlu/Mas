@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="lib" path="com/labjack/labjackud/LJUDJava.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Program Files/JMF2.1.1e/lib/jmf.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/QuickTime/QTSystem/QTJava.zip"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.6.0_22/lib/mail.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

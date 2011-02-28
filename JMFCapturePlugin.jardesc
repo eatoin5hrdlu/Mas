@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jardesc>
+    <jar path="C:/workspace/stopmojo/plugins/com.mondobeyondo.stopmojo.capture.JMFCapturePlugin.JMFCapturePlugin.jar"/>
+    <options overwrite="true" compress="true" exportErrors="true" exportWarnings="true" saveDescription="true" descriptionLocation="/stopmojo/JMFCapturePlugin.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
+    <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="true" generateManifest="true" manifestLocation="/stopmojo/JMFCapturePlugin.manifest">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
+        <javaElement handleIdentifier="=stopmojo/&lt;com.mondobeyondo.stopmojo.capture.JMFCapturePlugin"/>
+    </selectedElements>
+</jardesc>
