@@ -2483,17 +2483,19 @@ public void nextMovie()
 	  int SMTP_PORT = 25;
       boolean debug = false;
       
+      
       Properties props = new Properties();
-      props.put("mail.smtp.user", "MLS\\Peterr");
-      props.put("mail.smtp.host", "mail.ncmls.org");
+      props.put("mail.smtp.user", "movieratios");
+      props.put("mail.smtp.host", "smtp.gmail.com");
       props.put("mail.smtp.auth", "true");
+      props.put("mail.smtp.starttls.enable","true");
       props.put("mail.debug", debug);
       props.put("mail.smtp.port", SMTP_PORT);
 
       Session session = Session.getDefaultInstance(props,
       new javax.mail.Authenticator() {
       protected PasswordAuthentication getPasswordAuthentication() {
-      return new PasswordAuthentication("MLS\\PeterR", "le1974a#MAN");
+      return new PasswordAuthentication("movieratios", "sc13nc3!");
       }
       });
       session.setDebug(debug);
