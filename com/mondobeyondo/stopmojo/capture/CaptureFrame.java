@@ -1418,18 +1418,20 @@ else
     if(image != null)
     {
       try
-			{
-      	for(int i = 0; i < frames; i++)
-      		m_prj.putFrame(getCurFrame() + i, (BufferedImage) image);
+		{
+      		m_prj.putFrame(getCurFrame(), (BufferedImage) image);
      	  	setCurFrame(getCurFrame() + frames);
-     	  	setPrevFrame(getCurFrame() + ((Integer)m_prevFrameOffsetSpinner.getValue()).intValue());
-			}
+     	  	if ( m_prevFrameOffsetSpinner != null)
+     	  	{
+     	  		setPrevFrame(getCurFrame() + ((Integer)m_prevFrameOffsetSpinner.getValue()).intValue());
+     	  	}
+		}
       catch(Exception e)
-			{
+		{
       	e.printStackTrace();
-			}
+		}
+      m_filmPanel.position(getCurFrame());
     }
-    m_filmPanel.position(getCurFrame());
     m_timer.start();
     updateUI();
   }
