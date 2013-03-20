@@ -44,8 +44,8 @@ package com.mondobeyondo.stopmojo.capture;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.GradientPaint;
+//import java.awt.Font;
+//import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -80,11 +80,11 @@ public class ImagePanel extends JPanel
   
   private boolean
 	  m_gridOn;
-  private static String m_label = "IMAGE";
-  private static int db = 0;
+ // private static String m_label = "IMAGE";
+ // private static int db = 0;
   public ImagePanel(int numImages, String lbl)
   {
-	m_label = lbl;
+	//m_label = lbl;
   	m_images = new Image[numImages];
   	m_alphas = new AlphaComposite[numImages];
   	for(int i = 0; i < numImages; i++)
@@ -190,7 +190,7 @@ public class ImagePanel extends JPanel
   	int
 		 w = getSize().width,
 		 h = getSize().height;
-  	
+  	     //System.out.println("ipc"+w+", "+h);
   	
   	double
 		  windowRatio = (double)w / (double)h;
@@ -202,6 +202,10 @@ public class ImagePanel extends JPanel
 		    at = new AffineTransform(),
 		    iat = new AffineTransform();
 
+     // if (m_images.length==2) {
+    //	  w = 799;
+     // }
+    	
   	for(int i = 0; i < m_images.length; i++)
   	{
   		Image img = m_images[i];
@@ -215,9 +219,13 @@ public class ImagePanel extends JPanel
 
   			if (scale == 0)
   			{
-  				if(windowRatio < imageRatio)  scale = (double)w / iw;
-  				else   						  scale = (double)h / ih;
-
+  			//	if(windowRatio < imageRatio){
+  			//		scale = (double)w / iw;
+  			//	}
+  			//	else   {
+  			//		scale = (double)h / ih;
+  			//	}
+				scale = (double)w / iw;
   	  	//	  System.out.println("Scale =" + scale);
 
   		  iat.scale(scale, scale);

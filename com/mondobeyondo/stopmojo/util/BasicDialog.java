@@ -222,8 +222,8 @@ public class BasicDialog extends JDialog
 		PREF_X = "X",
 		PREF_Y = "Y",
 		PREF_WIDTH = "Width",
-		PREF_HEIGHT = "Height",
-		PREF_EXTENDEDSTATE = "ExtendedState";
+		PREF_HEIGHT = "Height";
+//		PREF_EXTENDEDSTATE = "ExtendedState";
 	  
 	public void restoreSizeAndPosition() 
 	{

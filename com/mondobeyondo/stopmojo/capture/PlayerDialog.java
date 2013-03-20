@@ -143,6 +143,7 @@ System.out.println("controllerUpdate: " + event.toString());
     }
     else if(event instanceof DurationUpdateEvent) 
     {
+    @SuppressWarnings("unused")
       Time t = ((DurationUpdateEvent)event).getDuration();
     }
     else if(event instanceof CachingControlEvent) 

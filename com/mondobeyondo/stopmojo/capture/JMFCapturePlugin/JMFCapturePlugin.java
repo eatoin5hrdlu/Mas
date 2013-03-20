@@ -50,7 +50,7 @@ import javax.media.Buffer;
 import javax.media.CaptureDeviceInfo;
 import javax.media.CaptureDeviceManager;
 import javax.media.ConfigureCompleteEvent;
-import javax.media.Control;
+//import javax.media.Control;
 import javax.media.ControllerEvent;
 import javax.media.ControllerListener;
 import javax.media.EndOfMediaEvent;
@@ -120,13 +120,14 @@ public class JMFCapturePlugin implements CapturePlugin, ControllerListener
 		//  capture devices available.
 		try
 		{
-  		Vector
+  		@SuppressWarnings("unchecked")
+		Vector<CaptureDeviceInfo>
 	      devs = CaptureDeviceManager.getDeviceList(null);
   		
   		for(int i = 0; i < devs.size(); i++)
   		{
   			CaptureDeviceInfo
-  			  c = (CaptureDeviceInfo)devs.elementAt(i);
+  			  c = devs.elementAt(i);
   				
   			Format[]
   		    formats = c.getFormats();
@@ -168,7 +169,7 @@ public class JMFCapturePlugin implements CapturePlugin, ControllerListener
 	    {
 		    m_capMediaPlayer.close();
 		    m_capMediaPlayer.deallocate();
-		    m_capMediaPlayer.disable();
+		    m_capMediaPlayer.setEnabled(false);
 		    m_capMediaPlayer = null;
 	    }
 		dispose();
@@ -246,6 +247,7 @@ public class JMFCapturePlugin implements CapturePlugin, ControllerListener
 			{
 	    		m_parent.setCursor(oldCursor);
 	    		System.out.println("This happens when there is no jmf.properties file");
+	    		System.out.println("or the device name (in the dp.smp file) is missing a ~N (e.g. ~0, ~1) at the end");
 	    		throw new CapturePluginException("Unable to set capture device!", e2);
 			}
       
@@ -476,7 +478,7 @@ public class JMFCapturePlugin implements CapturePlugin, ControllerListener
 
     return(mediaPlayer);
   }
-  
+ /* 
   private void setMediaPlayer(MediaPlayer player)
   {
   	m_capMediaPlayer = player;
@@ -484,7 +486,7 @@ public class JMFCapturePlugin implements CapturePlugin, ControllerListener
 	  
 	  Control[] controls = player.getControls();
   }
-
+*/
   /**
    * Block until the processor has transitioned to the given state.
    * Return false if the transition failed.

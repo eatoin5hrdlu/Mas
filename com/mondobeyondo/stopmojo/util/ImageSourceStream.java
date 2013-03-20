@@ -63,12 +63,13 @@ import javax.media.protocol.PullBufferStream;
  */
 public class ImageSourceStream implements PullBufferStream 
 {
- 	private Vector 
+	@SuppressWarnings("unused")
+ 	private Vector<BufferedImage> 
 	  m_images;
  	
   private int 
-		m_curFrame,
-	  m_nextImage = 0;	// index of the next image to be read.
+		m_curFrame;
+//	  m_nextImage = 0;	// index of the next image to be read.
   
   private VideoFormat 
 	  m_format;
@@ -79,14 +80,14 @@ public class ImageSourceStream implements PullBufferStream
   private ImageFrameSource
 	  m_source;
   
-  private static final boolean
-	  s_intArray = true;
+ // private static final boolean
+//	  s_intArray = true;
   
   private int
 	  m_data[];
   
-  private float
-	  m_frameRate;
+ // private float
+//	  m_frameRate;
   
   private long
 	  m_frameDuration;
@@ -95,7 +96,7 @@ public class ImageSourceStream implements PullBufferStream
   {
   	m_source = source;
   	m_curFrame = 0;
-  	m_frameRate = frameRate;
+  //	m_frameRate = frameRate;
   	BufferedImage img = source.getImage(0);
    	m_format = new RGBFormat(new Dimension(img.getWidth(), img.getHeight()), img.getWidth() * img.getHeight(), Format.intArray, frameRate, 24, 0x00ff0000, 0x0000ff00, 0x000000ff, 1, img.getWidth(), Format.FALSE, Format.NOT_SPECIFIED);
    	m_data = new int[img.getWidth() * img.getHeight()];

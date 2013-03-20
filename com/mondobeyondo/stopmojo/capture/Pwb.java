@@ -36,7 +36,7 @@ public class Pwb extends JPanel {
 	  public void newImage(String file)
 	  {
 		    fd = null;
-		    Image tmp = image;
+	//	    Image tmp = image;
 
 		    try
 		    {

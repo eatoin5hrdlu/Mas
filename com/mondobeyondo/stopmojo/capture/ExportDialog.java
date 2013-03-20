@@ -72,7 +72,7 @@ import javax.media.RealizeCompleteEvent;
 import javax.media.SizeChangeEvent;
 import javax.media.StartEvent;
 import javax.media.StopTimeChangeEvent;
-import javax.media.Time;
+//import javax.media.Time;
 import javax.media.TransitionEvent;
 import javax.media.UnsupportedPlugInException;
 import javax.media.control.TrackControl;
@@ -243,7 +243,8 @@ public class ExportDialog extends BasicDialog implements ControllerListener, Act
 		centerOnParent();
 		m_processor.configure();
 	}
-  
+    protected void finalize() { onClose((java.awt.event.WindowEvent) null); }
+    
 	private void onClose(java.awt.event.WindowEvent evt)
 	{
 		doFrameClose();
@@ -309,7 +310,7 @@ public class ExportDialog extends BasicDialog implements ControllerListener, Act
   	
   	return vf.getEncoding();
   }
-  
+  @SuppressWarnings("unused")
   private int getCurBpp()
   {
   	if(m_bppComboBox.getSelectedItem() != null)
@@ -419,8 +420,8 @@ public class ExportDialog extends BasicDialog implements ControllerListener, Act
   	int 
 		  i = m_fileTypeComboBox.getSelectedIndex();
   	
-		TreeSet<?>
-		  encodings = new TreeSet<Object>();
+//		TreeSet<?>
+//		  encodings = new TreeSet<Object>();
 		
   	if(i != -1)
   	{
@@ -520,7 +521,7 @@ public class ExportDialog extends BasicDialog implements ControllerListener, Act
     }
     else if(event instanceof DurationUpdateEvent) 
     {
-      Time t = ((DurationUpdateEvent)event).getDuration();
+      /* Time t = */((DurationUpdateEvent)event).getDuration();
     }
     else if(event instanceof CachingControlEvent) 
     {

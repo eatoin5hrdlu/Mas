@@ -62,6 +62,7 @@ import javax.swing.filechooser.FileFilter;
  */
 public class Project 
 {
+	@SuppressWarnings("unused")
 	private static final String
 	  PROJECT_HEADER = "StopMojo Project File",
 		PROJECT_ID = "StopMojo",
@@ -474,7 +475,7 @@ public class Project
   
   public int getHDivLoc()
   {
-  	return Util.atoi(m_prop.getProperty(PROP_HDIVLOC, "640"));
+  	return Util.atoi(m_prop.getProperty(PROP_HDIVLOC, "40"));
   }
 
   public void setHDivLoc(int hdl)
@@ -484,7 +485,7 @@ public class Project
 
   public int getVDivLoc()
   {
-  	return Util.atoi(m_prop.getProperty(PROP_VDIVLOC, "640"));
+  	return Util.atoi(m_prop.getProperty(PROP_VDIVLOC, "40"));
   }
 
   public void setVDivLoc(int hdl)

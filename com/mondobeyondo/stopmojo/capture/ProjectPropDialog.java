@@ -50,7 +50,7 @@ import java.awt.event.KeyEvent;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
+//import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -77,10 +77,11 @@ public class ProjectPropDialog extends BasicDialog
     m_cancelBut;
 
   private JTextField
-		m_fpsTextField;
-  
-  private JButton
-	  m_browseBut;
+		m_fpsTextFieldE;
+  private JTextField
+	m_fpsTextFieldS;
+//  private JButton
+//	  m_browseBut;
   
   private JComboBox
 	  m_formatComboBox;
@@ -188,8 +189,8 @@ public class ProjectPropDialog extends BasicDialog
   
   private JPanel makeFieldPanel()
   {
-		JLabel
-			label;
+//		JLabel
+//			label;
 		int
 		  i,
 		  sel = -1;
@@ -216,8 +217,8 @@ public class ProjectPropDialog extends BasicDialog
 			sel = 0;
 		m_formatComboBox.setSelectedIndex(sel);
 		fieldPanel.addField("Image File Format:", m_formatComboBox, 100);
-    fieldPanel.addField("Frames Per Second:", m_fpsTextField = new RTypeTextField("2I.DD,1 30", Util.formatNumber("#0.00", m_prj.getFps())), 50);
-
+    fieldPanel.addField("Frames Per Second:", m_fpsTextFieldE = new RTypeTextField("2I.DD,1 30", Util.formatNumber("#0.00", m_prj.getFps())), 40);
+    fieldPanel.addField("Fotogramas per secundo", m_fpsTextFieldS = new RTypeTextField("2I.DD,1 30", Util.formatNumber("#0.00", m_prj.getFps())), 80);
     fieldPanel.done();
     		
 		return fieldPanel;
@@ -229,7 +230,7 @@ public class ProjectPropDialog extends BasicDialog
       m_prj.setImageFormat((String)m_formatComboBox.getSelectedItem());
     else
     	m_prj.setImageFormat("");
-    m_prj.setFps((float)Util.atof(m_fpsTextField.getText()));
+    m_prj.setFps((float)Util.atof(m_fpsTextFieldE.getText()));
   	
     try
 		{

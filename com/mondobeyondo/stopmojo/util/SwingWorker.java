@@ -16,6 +16,7 @@ import javax.swing.SwingUtilities;
  */
 public abstract class SwingWorker {
     private Object value;  // see getValue(), setValue()
+    @SuppressWarnings("unused")
     private Thread thread;
 
     /** 

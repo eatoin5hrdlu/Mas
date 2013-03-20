@@ -43,16 +43,17 @@ import java.util.Date;
 import java.util.Random;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.awt.AlphaComposite;
+//import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+//import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment; 
+//import java.awt.GraphicsEnvironment; 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -61,7 +62,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.AffineTransform;
+//import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -78,20 +79,20 @@ import javax.imageio.IIOException;
 import javax.media.CaptureDeviceInfo;
 import javax.media.CaptureDeviceManager;
 import javax.media.Format;
-import javax.media.Manager;
+//import javax.media.Manager;
 import javax.media.MediaLocator;
 import javax.media.NoDataSourceException;
 import javax.media.bean.playerbean.MediaPlayer;
 import javax.media.control.FormatControl;
-import javax.media.format.VideoFormat;
+//import javax.media.format.VideoFormat;
 import javax.media.protocol.CaptureDevice;
 import javax.media.protocol.DataSource;
-import javax.media.protocol.FileTypeDescriptor;
+//import javax.media.protocol.FileTypeDescriptor;
 import javax.media.protocol.PushBufferDataSource;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
+//import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -107,12 +108,12 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
-import javax.swing.JToggleButton;
+//import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.Timer;
-import javax.swing.border.BevelBorder;
+//import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -122,22 +123,22 @@ import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
-import com.mondobeyondo.stopmojo.plugin.Plugin;
+//import com.mondobeyondo.stopmojo.plugin.Plugin;
 import com.mondobeyondo.stopmojo.plugin.PluginManager;
 import com.mondobeyondo.stopmojo.plugin.capture.CapturePlugin;
 import com.mondobeyondo.stopmojo.plugin.capture.CapturePluginException;
 import com.mondobeyondo.stopmojo.util.CDSWrapper;
 import com.mondobeyondo.stopmojo.util.FieldPanel;
 import com.mondobeyondo.stopmojo.util.FramePosSizeHandler;
-import com.mondobeyondo.stopmojo.util.ImageDataSource;
+//import com.mondobeyondo.stopmojo.util.ImageDataSource;
 import com.mondobeyondo.stopmojo.util.Project;
-import com.mondobeyondo.stopmojo.util.ProjectFrameSource;
+//import com.mondobeyondo.stopmojo.util.ProjectFrameSource;
 import com.mondobeyondo.stopmojo.util.SwingWorker;
 
 import javax.mail.*;
 import javax.mail.internet.*;
 
-import sun.font.FontFamily;
+// import sun.font.FontFamily;
 
 import java.util.*;
 /**
@@ -152,18 +153,29 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
 //	private static final int SCREENWIDTH = 1280;
 //	private static final int SCREENHEIGHT = 1024;
     private static int ccam = 0;
-
+    
+//		private static int watchmonitor = 0;
+//  		private static int lastmonitor = -1;
+  		private static int lonce = 1;
+  		private static int ronce = 1;
+  	public static int nowplaying = 0;
 	public static int SCREENWIDTH = 1600;
 	public static int SCREENHEIGHT = 1200;
+	public static int speedSent = 0;
 	public static int m_seq = 1;
 	public static int m_random = (new Random()).nextInt(100);
 	public static Color colorA = Color.decode("0xDBECF5");
 	public static Color colorB = Color.decode("0xEAEFF0");
+	public static Color colorEnglish = Color.decode("0xC13828");
+	public static Color colorSpanish = Color.decode("0x007AA5");
+ 	private static final String ENGLISH = "<div style='color:#007AA5'>";
+	private static final String SPANISH = "<div style='color:#C13828'>";
 	private static final String
-	  	PREF_VDIVLOC = "VDivLoc",
+//	    PREF_LEFTLAB = "LeftLab",
+//	  	PREF_VDIVLOC = "VDivLoc",
 		PREF_HDIVLOC = "HDivLoc",
 		PREF_CAPDEVNAME = "CapDevName",
-		PREF_CAPFORMAT = "CapFormat",
+//		PREF_CAPFORMAT = "CapFormat",
 		PREF_CAPPLUGINID = "CapPluginID",
 		PREF_GRIDON = "GridOn",
 		PREF_GRIDNUMH = "GridNumH",
@@ -184,73 +196,144 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
 	private static int PLAY_FRAME_TIMEOUT = 80;
 	private static final int[] cameraIds = new int[] { 3, 8 };
 	private static int currentCameraIndex = 0;
-	
+
+	private static int m_lastMovieNum;
+	private static int m_lastFrameSent;
+	private static int movieNum = 1;
+	private static String movieName = null;
+
 	private JFrame movieDialog = null;
+	private JFrame movieReportDialog = null;
 	private JLabel movieMessage = null;
-	private Image testPattern = null;
-	private Image testPattern2 = null;
+	private JLabel movieReportMessage = null;
+	private String movieReportText = null;
+//	private Image testPattern = null;
+//	private Image testPattern2 = null;
 
  	private JFrame startDialog = null;
  	private JLabel startMessage = null;
  	private static final String m_StartMessage =
- 		"<html><body><center><pre>\n\n</pre><h1>" +
+ 		"<html><body style=\"font-family: 'Trebuchet MS'\"><center><pre>\n\n</pre>" +
+ 		ENGLISH +
  		"<h1>&nbsp;&nbsp;&nbsp;"      +
- 		"Press RESET Again to Start a New Movie" +
+ 		"Press RESET button again to start a new movie" +
  		"&nbsp;&nbsp;&nbsp;</h1>"     +
  		"<h1>&nbsp;&nbsp;&nbsp;"      +
  		"This will erase all previous pictures!" +
  		"&nbsp;&nbsp;&nbsp;</h1>"     +
  		"<pre>\n\n</pre>"			  +
  		"<h2>&nbsp;&nbsp;&nbsp;"	  +
- 		"(Press any other key to Cancel)" +
+ 		"(Press any other button to cancel)" +
+ 		"&nbsp;&nbsp;&nbsp;</h2>"	  +
+ 		"<pre>\n\n\n</pre>" +
+ 		SPANISH +
+ 		"<h1>&nbsp;&nbsp;&nbsp;"      +
+ 		"Pulse REINICIAR de nuevo para comenzar una nueva película." +
+ 		"&nbsp;&nbsp;&nbsp;</h1>"     +
+ 		"<h1>&nbsp;&nbsp;&nbsp;"      +
+ 		"¡Se borrarán todas las fotos anteriores!" +
+ 		"&nbsp;&nbsp;&nbsp;</h1>"     +
+ 		"<pre>\n\n</pre>"			  +
+ 		"<h2>&nbsp;&nbsp;&nbsp;"	  +
+ 		"(Pulse cualquier otra tecla para cancelar)" +
  		"&nbsp;&nbsp;&nbsp;</h2>"	  +
  		"<pre>\n\n</pre></center></body></html>";
 
+
 	private static final String m_MakeMovieMessage =
-		"<html><body><center><pre>\n\n</pre><h1>" +
+		"<html><body style=\"font-family: 'Trebuchet MS'\"><center><pre>\n\n</pre>" +
+		ENGLISH +
 		"<h1>&nbsp;&nbsp;&nbsp;"      +
-		"Press SAVE Again to Save this Movie" +
+		"Press SAVE button again to save this movie" +
 		"&nbsp;&nbsp;&nbsp;</h1>"     +
-		"<pre>\n\n</pre>"			  +
-		"<h2>&nbsp;&nbsp;&nbsp;"	  +
-		"(Press any other key to Cancel)" +
-		"&nbsp;&nbsp;&nbsp;</h2>"	  +
-		"<pre>\n\n</pre></center></body></html>";
+		"<pre>\n</pre>"			  +
+		"<h1>&nbsp;&nbsp;&nbsp;"	  +
+		"Press any other button to cancel" +
+		"&nbsp;&nbsp;&nbsp;</h1>"	  +
+		"<pre>\n\n\n</pre>"			  +
+		SPANISH +
+		"<h1>&nbsp;&nbsp;&nbsp;"      +
+		"Pulse GUARDAR otra vez para guardar esta película" +
+		"&nbsp;&nbsp;&nbsp;</h1>"     +
+		"<pre>\n</pre>"			  +
+		"<h1>&nbsp;&nbsp;&nbsp;"	  +
+		"Pulse cualquier otra tecla para cancelar" +
+		"&nbsp;&nbsp;&nbsp;</h1>"	  +
+		"<pre>\n</pre></center></body></html>";
+
+ 	private JFrame playDialog = null;
+ 	private JLabel playMessage = null;
+	private static final String m_PlayMovieMessage =
+		"<html><body style=\"font-family: 'Trebuchet MS'\"><center>" +
+		ENGLISH +
+		"<h1>&nbsp;&nbsp;&nbsp;"      +
+		"Press RESET to return to previous screen" +
+		"&nbsp;&nbsp;&nbsp;</h1>"     +
+		"<h1>&nbsp;&nbsp;&nbsp;"	  +
+		"Or press PLAY MOVIE button to play again" +
+		"&nbsp;&nbsp;&nbsp;</h1>"	  +
+		"<pre>\n\n\n</pre>"			  +	
+		SPANISH +
+		"<h1>&nbsp;&nbsp;&nbsp;"      +
+		"Pulse REINICIAR para volver a la pantalla anterior" +
+	//	"Pulse REINICIAR para volver a la pantalla anterior o pulse el botón" +
+		"&nbsp;&nbsp;&nbsp;</h1>"     +	
+		"<h1>&nbsp;&nbsp;&nbsp;"	  +
+		" o pulse el botón REPRODUCIR PELÍCULA para reproducirla de nuevo" +
+		"&nbsp;&nbsp;&nbsp;</h1>" +
+		"</center></body></html>";
 
 	private static final String m_MakingMovieMessage =
-		"<html><body><center><pre>\n\n</pre><h1>" +
+		"<html><body style=\"font-family: 'Trebuchet MS'\"><center>" +
+		ENGLISH +
 		"<h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"      +
 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"          +
-		"Saving Movie . . ." +
+		"Saving movie . . . Please wait</h1>"     +
+		"<pre>\n</pre>" +
+		"<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"      +
+		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"          +
+		"To view movie visit lifeandscience.org/movieratios</h2>" +
+		"<pre>\n\n\n</pre>" +
+		SPANISH +
+		"<h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"      +
+		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"          +
+		"Guardando película . . . Por favor, espere</h1>"     +
+		"<pre>\n</pre>" +
+		"<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"      +
+		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"          +
+		"Para ver la visita de pelicula lifeandscience.org/movieratios</h2>" +
+		"</center></body></html>";
+	
+/*	private static final String m_SwitchingCameraMessage =
+		"<html><body style=\"font-family: 'Trebuchet MS'\"><center><pre>\n\n</pre>" +
+		ENGLISH +
+		"<h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"      +
+		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"          +
+		"Switching cameras . . ." +
 		"</h1>"     +
 		"<pre>\n\n</pre>"			  +
 		"<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"	  +
 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"        +
 		"(Please wait)" +
 		"&nbsp;&nbsp;&nbsp;</h2>"	  +
-		"<pre>\n\n</pre></center></body></html>";
+		"<pre>\n\n</pre></center></body></html>"; */
 	
-	private static final String m_SwitchingCameraMessage =
-		"<html><body><center><pre>\n\n</pre><h1>" +
-		"<h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"      +
-		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"          +
-		"Switching Cameras . . ." +
-		"</h1>"     +
-		"<pre>\n\n</pre>"			  +
-		"<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"	  +
-		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"        +
-		"(Please wait)" +
-		"&nbsp;&nbsp;&nbsp;</h2>"	  +
-		"<pre>\n\n</pre></center></body></html>";
-	
-	private static final String m_lastFrameLabel = "Last  Picture";
-	private static final String m_currentFrameLabel = "Current  View";
-	private static final int FRAME_LABELX = 260;
-	private static final int FRAME_LABELY = 360;  
+	private static final String m_lastFrameLabelE = "Last  Picture";
+	private static final String m_lastFrameLabelS = "Última imagen";
+	private static final String m_playFrameLabelE = "Playing  Movie";
+	private static final String m_playFrameLabelS = "Reproduccion de Pelicula";
+	static final String m_currentFrameLabelE = "Current  View";
+	static final String m_currentFrameLabelS = "Vista actual";
+	//private static final int FRAME_LABELX = 260;
+	//private static final int FRAME_LABELY = 360;
 
-	private static String m__currentPluginID;
+//	private static String m__currentPluginID;
 	static int movieButton = 0;
 	static int startButton = 0;
+	static int playButton = 0;
+	static int playAgainButton = 0;
+	static int uploadStatus = 0;
+	static int otherButton = 0;
 	
 	public static boolean
 		m_oneCamera = true; 
@@ -273,18 +356,23 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
   private JPanel
 	  m_compPanel,m_compInner,
 	  m_leftPanel, m_leftInner;
+	  //m_playPanel, m_playInner,
+	  //m_leftLabel;
   
-    private ImagePanel
+  private ImagePanel
   	m_compImagePanel,
   	m_leftImagePanel;
+  	//m_playMoviePanel;
     
   private JLabel
 	  m_statusBarLabel;
-
+	  
+  final JLabel labE = new JLabel();
+  final JLabel labS = new JLabel();
   
   private JSlider
 	  m_prevFrameAlphaSlider,
-		m_mainAlphaSlider;
+	  m_mainAlphaSlider;
   
   private JButton
 	  m_previewBut,
@@ -293,12 +381,12 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
 	  m_povBut;
 
   
-	private JSplitPane
+  private JSplitPane
     m_vSplitPane,
     m_hSplitPane;
-	  
+//    m_hOnePane;
 	
-	private JSpinner
+  private JSpinner
 	    m_prevFrameOffsetSpinner,
 		m_curFrameSpinner,
 		m_gridHSpinner,
@@ -328,7 +416,7 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
 	private PluginManager
 	  m_pluginManager;
 
-	private Vector
+	private Vector<?>
 	  m_capturePlugins;
 	
 	private CapturePlugin
@@ -412,10 +500,12 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
 			setJMenuBar(makeMenuBar());
 			this.getContentPane().add(makeToolBar(), BorderLayout.NORTH);
 		}
-
-    m_hSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
-            m_leftPanel = makePreviewPanel(),
+	
+    m_hSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+    	//m_playPanel = makePlayPanel(),
+        m_leftPanel = makePreviewPanel(),
 	    m_compPanel = makeCompPanel());
+    
     /*
   	{
   	    @Override
@@ -433,7 +523,6 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
   	}; 
     */
     m_hSplitPane.setDividerLocation(m_prj.getHDivLoc());
-    flattenSplitPane(m_hSplitPane);
     m_hSplitPane.setOpaque(false);
     setPrevFrame(m_prj.getCurFrameNum());
     //	setPrevFrame(0);
@@ -441,7 +530,7 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
     m_filmPanel = new filmStrip("C:/TEMP/defaultProject/dp/Frames/", fps, m_lastFrame);
     m_filmPanel.setVisible(true);
     m_vSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
-				              m_hSplitPane, 
+				  m_hSplitPane, 
 				  m_filmPanel);
     /*
  	{
@@ -474,15 +563,15 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
   	
     flattenSplitPane(m_vSplitPane);
     getContentPane().add(m_vSplitPane, BorderLayout.CENTER);
-    // getContentPane().add(new Pwb("images/12fps.png"),BorderLayout.SOUTH);
-    try {
-    	testPattern = javax.imageio.ImageIO.read(
-    			new File("images/Test000001.png"));
-    }	catch(Exception e) { e.printStackTrace(); }
-    try {
-    	testPattern2 = javax.imageio.ImageIO.read(
-    			new File("images/Test000004.png"));
-    }	catch(Exception e) { e.printStackTrace(); }
+    // getContentPane().add(new Pwb("images/12fps."),BorderLayout.SOUTH);
+//    try {
+//    	testPattern = javax.imageio.ImageIO.read(
+ //   			new File("images/Test000001.png"));
+ //   }	catch(Exception e) { e.printStackTrace(); }
+//    try {
+//    	testPattern2 = javax.imageio.ImageIO.read(
+//    			new File("images/Test000004.png"));
+//    }	catch(Exception e) { e.printStackTrace(); }
 //    m_compImagePanel.setImage(1, null);
 //    m_leftImagePanel.setImage(0, null);
       
@@ -528,7 +617,6 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
       
       jSplitPane.setBorder(null);
   }
-  
 
 
 	public void setTitle(String s)
@@ -567,7 +655,7 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
 
 		  colorA = m_prj.getColorA();
 		  colorB = m_prj.getColorB();
-		  System.out.println("Project Preferences loaded and set");
+		  System.out.println("Project Preferences loaded and set from "+m_prj.getFileName());
 		}
 		updateUI();
 	}
@@ -576,7 +664,6 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
   {
   	return m_prj;
   }
-	
 	
   private JPanel makeCompPanel()
   {
@@ -592,6 +679,10 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
   		   super.paintComponent(g);
   		   int w = getWidth( );
   		   int h = getHeight( );
+  		   if (ronce==1){
+  			   	ronce = 0;
+  			   	System.out.println("Right:("+w+","+h+")");
+  		   }
   		   GradientPaint gp = new GradientPaint(
   				   0, 0, colorA,
   				   0, h, colorB );
@@ -600,13 +691,23 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
   		   g2d.fillRect( 0, 0, w, h ); 
   	   }
   	};
-
+    /* BORDER STUFF ADDED */
+    boolean border = true;
+    @SuppressWarnings("unused")
+    Border raisedbevel=null, loweredbevel=null, compound=null, paneEdge=null;
+    if (border)
+    {
+    paneEdge = BorderFactory.createEmptyBorder(10,10,10,10);
+    raisedbevel = BorderFactory.createRaisedBevelBorder();
+    loweredbevel = BorderFactory.createLoweredBevelBorder();
+    compound = BorderFactory.createCompoundBorder(raisedbevel,loweredbevel);
+    }
   	
   	m_compInner.setBorder(new EmptyBorder(150,40,50,40));
 //  	ip.setBorder(new BevelBorder(BevelBorder.LOWERED));
   	m_compInner.setLayout(new BorderLayout());
 	   
- 	JPanel m_compLabel = new JPanel()
+ 	JPanel m_compLabelE = new JPanel()
    	{
   	   @Override
   	    protected void paintComponent(Graphics g) {
@@ -614,30 +715,52 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
   		   Graphics2D g2d = (Graphics2D)g;
 		   Font font = new Font("Trebuchet MS",Font.BOLD,32);
 		   g2d.setFont(font);
-		   g2d.setColor(Color.black);
-		   g2d.drawString(m_currentFrameLabel, 260, 30);
+		   g2d.setColor(colorEnglish);
+		   g2d.drawString(m_currentFrameLabelE, 300, 30);
+		   g2d.setColor(colorSpanish);
+		   g2d.drawString(m_currentFrameLabelS, 320, 70);
   	   }
    	};
-		   
+	JPanel m_compLabelS = new JPanel()
+   	{
+  	   @Override
+  	    protected void paintComponent(Graphics g) {
+  		   super.paintComponent(g);	
+  		   Graphics2D g2d = (Graphics2D)g;
+		   Font font = new Font("Trebuchet MS",Font.BOLD,32);
+		   g2d.setFont(font);
+		   g2d.setColor(colorSpanish);
+		   g2d.drawString(m_currentFrameLabelS, 320, 30);
+  	   }
+   	};	   
     m_compImagePanel = new ImagePanel(2, "Current Frame");
     m_compImagePanel.setAlpha(0, (float)1.0);
-    m_compImagePanel.setAlpha(1, (float)0.5);
+    m_compImagePanel.setAlpha(1, (float)0.3);
     m_compImagePanel.setPreferredSize(new Dimension(640,480));
 //  	m_compImagePanel.setGridNumX(m_pref.getInt(PREF_GRIDNUMH, 10));
 //  	m_compImagePanel.setGridNumY(m_pref.getInt(PREF_GRIDNUMV, 10));
   	m_compImagePanel.showGrid(m_pref.getBoolean(PREF_GRIDON, false));
-
+	if (border)
+    {
+		m_compImagePanel.setBorder(compound);
+		//p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));		
+    }
   	m_compInner.add(m_compImagePanel, BorderLayout.CENTER);
-  	m_compLabel.setPreferredSize(new Dimension(600,200));
-  	m_compLabel.setOpaque(false);
-  	m_compLabel.setVisible(true);
+ // 	p.add(m_compImagePanel, BorderLayout.CENTER);
+  	m_compLabelE.setPreferredSize(new Dimension(300,200));
+  	m_compLabelE.setOpaque(false);
+  	m_compLabelE.setVisible(true);
+  	m_compLabelS.setPreferredSize(new Dimension(300,100));
+  	m_compLabelS.setOpaque(false);
+  	m_compLabelS.setVisible(true);
   	m_compInner.setOpaque(false);
   	m_compInner.setVisible(true);
   	m_compImagePanel.setOpaque(false);
   	m_compImagePanel.setVisible(true);
   	
   	p.add(m_compInner, BorderLayout.NORTH);
-  	p.add(m_compLabel, BorderLayout.SOUTH);
+  	p.add(m_compLabelS, BorderLayout.SOUTH);
+  	p.add(m_compLabelE, BorderLayout.SOUTH);
 
   	JPanel cp = new JPanel();
   	cp.setOpaque(false);
@@ -672,9 +795,9 @@ public class CaptureFrame extends JFrame implements ChangeListener, KeyListener 
 		gbc.gridx = 20;
 		gbc.gridy = 20;
 		gbc.anchor = GridBagConstraints.SOUTH;
-}
-else
-{
+	}
+	else
+	{
   	cp.setLayout(new GridBagLayout());
   	cp.setOpaque(true);
   	FieldPanel pfp = new FieldPanel();
@@ -806,9 +929,8 @@ else
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
       	cp.add(butPanel, gbc);
-  }
-	if (!mlsButtonBox)
-		p.add(cp, BorderLayout.SOUTH);
+      	p.add(cp, BorderLayout.SOUTH);
+	} //	if (!mlsButtonBox)
 	
 	p.setOpaque(false);
 	doLayout();
@@ -816,7 +938,7 @@ else
   	return p;
   }
   
-  private JPanel makePreviewPanel()
+  public JPanel makePreviewPanel()
   {
   	JPanel 	  p = new JPanel();
 
@@ -828,6 +950,10 @@ else
   	    	super.paintComponent(g);
   	    	int w = getWidth( );
   	    	int h = getHeight( );
+   		   if (lonce==1){
+ 			   	lonce = 0;
+ 			   	System.out.println("Left:("+w+","+h+")");
+ 		   }
     	  	  GradientPaint gp = new GradientPaint(
       	    	      0, 0, colorA,
       	    	      0, h, colorB );
@@ -836,21 +962,39 @@ else
   	    	  g2d.fillRect( 0, 0, w, h );
   	    }
   	};
+  	//Sets left frame position
   	m_leftInner.setBorder(new EmptyBorder(150, 40, 50, 40));
   	m_leftInner.setLayout(new BorderLayout());
 
+  	//JPanel m_leftLabel = new JPanel();
+  	//final JLabel lab = new JLabel();
+  	labE.setText(m_lastFrameLabelE);
+  	labE.setFont(new Font("Trebuchet MS", Font.BOLD, 32));
+    labE.setForeground(colorEnglish);
+  	labS.setText(m_lastFrameLabelS);
+  	labS.setFont(new Font("Trebuchet MS", Font.BOLD, 32));
+    labS.setForeground(colorSpanish);
+  	//m_leftLabel.add(labE);
+  	//m_leftLabel.add(labS);
+  	//Sets left frame label position
   	JPanel m_leftLabel = new JPanel()
   	{
   	    @Override
   	    protected void paintComponent(Graphics g) {
   	    	super.paintComponent(g);
+  	    	if (nowplaying == 0)
+  	    	{
   	    	  Graphics2D g2d = (Graphics2D)g;
   	    	  Font font = new Font("Trebuchet MS",Font.BOLD,32);
   	    	  g2d.setFont(font);
-  	    	  g2d.setColor(Color.black);
-  	    	  g2d.drawString(m_lastFrameLabel, 280, 30);  
+  	    	  g2d.setColor(colorEnglish);
+  	    	  g2d.drawString(m_lastFrameLabelE, 290, 30);  
+  	    	  g2d.setColor(colorSpanish);
+  	    	  g2d.drawString(m_lastFrameLabelS, 280, 70);
+  	    	} 
   	    }
   	};
+  	
   	m_leftLabel.setPreferredSize(new Dimension(600,200));
     m_leftImagePanel = new ImagePanel()
     {
@@ -867,6 +1011,7 @@ else
     };
      /* BORDER STUFF ADDED */
      boolean border = true;
+     @SuppressWarnings("unused")
      Border raisedbevel=null, loweredbevel=null, compound=null, paneEdge=null;
      if (border)
      {
@@ -879,12 +1024,13 @@ else
     m_leftImagePanel.setAlpha(0, (float)1.0);
     m_leftImagePanel.setPreferredSize(new Dimension(640,480));
     m_leftInner.add(m_leftImagePanel, BorderLayout.CENTER);
-  	m_leftLabel.setOpaque(false);
+  	//m_leftLabel.setOpaque(false);
   	m_leftLabel.setVisible(true);
   	m_leftImagePanel.setOpaque(false);
   	m_leftInner.setOpaque(false);
   	p.add(m_leftInner, BorderLayout.NORTH);
   	p.add(m_leftLabel, BorderLayout.SOUTH);
+  	//p.add(m_lfl, BorderLayout.SOUTH);
 
     //	m_speedLabel = new JLabel(SPEED_NORMAL);  	
   //	p.add(m_speedLabel,BorderLayout.SOUTH);
@@ -898,7 +1044,7 @@ else
   	doLayout();
 	return p;
   }
-
+  
 	private void setStatusText(String text)
 	{
 		if(text.equals(""))
@@ -1418,20 +1564,18 @@ else
     if(image != null)
     {
       try
-		{
-      		m_prj.putFrame(getCurFrame(), (BufferedImage) image);
+			{
+      	for(int i = 0; i < frames; i++)
+      		m_prj.putFrame(getCurFrame() + i, (BufferedImage) image);
      	  	setCurFrame(getCurFrame() + frames);
-     	  	if ( m_prevFrameOffsetSpinner != null)
-     	  	{
-     	  		setPrevFrame(getCurFrame() + ((Integer)m_prevFrameOffsetSpinner.getValue()).intValue());
-     	  	}
-		}
+     	  	setPrevFrame(getCurFrame() + ((Integer)m_prevFrameOffsetSpinner.getValue()).intValue());
+			}
       catch(Exception e)
-		{
+			{
       	e.printStackTrace();
-		}
-      m_filmPanel.position(getCurFrame());
+			}
     }
+    m_filmPanel.position(getCurFrame());
     m_timer.start();
     updateUI();
   }
@@ -1454,6 +1598,16 @@ setStatusText("Project dp was created");
 
   private void setCapDev(String pluginID, String devName)
   {
+//    String DeviceName;
+//	String DeviceVersion;
+	    for (int index = 0; index < 10; index++) { // We assume the number of capture decvices is less than 10
+	//        if (capGetDriverDescription(index, DeviceName, 32, DeviceVersion, 32)){
+
+	//            System.out.println("device "+ index + " " + DeviceName);
+	//        }
+
+	    } 
+
 	  System.out.println("setCapDev "+ pluginID +"  "+devName);
   	if(m_capturePlugins != null)
   	{
@@ -1464,7 +1618,8 @@ setStatusText("Project dp was created");
   		for(int i = 0; i < m_capturePlugins.size(); i++)
   		{
   			CapturePlugin
-				  cp = (CapturePlugin)m_capturePlugins.elementAt(i);	
+				  cp = (CapturePlugin)m_capturePlugins.elementAt(i);
+  			System.out.println("cpid "+cp.getID()+"  "+ pluginID);
   			if(cp.getID().equals(pluginID))
   			{
   				try
@@ -1482,6 +1637,8 @@ setStatusText("Project dp was created");
       setCursor(oldCursor);
   	}
   }
+  protected void finalize() { closeCapDev(); }
+  
   private void closeCapDev()
   {
   	if(m_capturePlugins != null)
@@ -1745,27 +1902,27 @@ setStatusText("Project dp was created");
   
 	public void setTimer(int delay)
 	{
-		if(m_timer != null)
-		{
+	   if(m_timer != null)
+	   {
 		  m_timer.stop();
 		  m_timer = null;
-		}
+       }
 
-    if(delay > 0)
-    {
-//System.out.println("setting timout to " + delay + " minutes");    	
-      m_timer = new Timer(delay, new ActionListener() 
-      	{
-		  	public void actionPerformed(ActionEvent evt) 
-			  {
-		  		// System.out.println(".");
-		  		doSnapShot();
-		  		m_timer.restart();
-			  }
-      	});
-      m_timer.setRepeats(false);
-      m_timer.start();
-    }
+       if(delay > 0)
+       {
+         //System.out.println("setting timout to " + delay + " minutes");    	
+         m_timer = new Timer(delay, new ActionListener() 
+         {
+             public void actionPerformed(ActionEvent evt) 
+             {
+                // System.out.println(".");
+            	doSnapShot();
+                m_timer.restart();
+             }
+         });
+         m_timer.setRepeats(false);
+         m_timer.start();
+       }
 	}
 	
 	public void setPlayTimer(int delay)
@@ -1783,29 +1940,54 @@ setStatusText("Project dp was created");
 
 		if(delay > 0)
 		{
+            //  System.out.println("setting timeout to " + delay + " minutes");    	
+            m_playtimer = new Timer(delay, new ActionListener() 
+            {
+		  	   public void actionPerformed(ActionEvent evt) 
+			   {
+		  		   // System.out.println("-");
+		  		   doFrameShot();
+		  		   if (m_playFrame <= m_lastFrame)
+		  		   {
+		  			   m_playtimer.setDelay(PLAY_FRAME_TIMEOUT);  
+		  			   m_playtimer.restart();
+		  		   }
+		  		   else
+		  		   {
+		  			   m_capturing = true;
 
-//  System.out.println("setting timeout to " + delay + " minutes");    	
-      m_playtimer = new Timer(delay, new ActionListener() 
-      {
-		  	public void actionPerformed(ActionEvent evt) 
-			  {
-		  		// System.out.println("-");
-		  		doFrameShot();
-		  		if (m_playFrame <= m_lastFrame)
-		  		{
-		  			m_playtimer.setDelay(PLAY_FRAME_TIMEOUT);  
-		  			m_playtimer.restart();
-		  		}
-		  		else
-		  		{
-		  			m_capturing = true;
-		  	  		setTimer(FRAME_TIMEOUT);
-		  		}
-			  }
+		  	  		   setTimer(FRAME_TIMEOUT);
+		  	  		   //newstuff
+		  	  		   /**if (playButton == 1) 
+		  	  	       {
+		  	              resetMessage();
+		  	              lab.setText(m_lastFrameLabel);
+		  	              m_hSplitPane.setDividerLocation(m_prj.getHDivLoc());
+		  	              m_leftInner.setBorder(new EmptyBorder(150, 40, 0, 40));
+		  	              //return;
+		  	  	       }**/
+		  	  		   if (playAgainButton == 1)
+		  	  		   {
+		  	              System.out.println("Preview Movie");
+			              playMessage = new JLabel(m_PlayMovieMessage);
+			              playMessage.setVisible(false);
+			              playMessage.setBackground(colorA);
+			              playDialog = new JFrame();
+			              playDialog.setVisible(false);
+			              playDialog.setContentPane(playMessage);
+			              playDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+			              playDialog.setLocation(SCREENWIDTH/3-100,SCREENHEIGHT/2+140);
+			              playDialog.setBackground(colorA);
+			              playDialog.pack();
+			              playMessage.setVisible(true);
+			              playDialog.setVisible(true);
+		  	  		   }
+		  		   }
+			   }
 		  });
-      	m_playtimer.setRepeats(false);
-      	m_playtimer.start();
-    }
+      	  m_playtimer.setRepeats(false);
+      	  m_playtimer.start();
+       }
 	}
 
   
@@ -1833,12 +2015,24 @@ setStatusText("Project dp was created");
 					}
 		  		return null;
         }
-  				
+
         public void finished() 
         {
         	BufferedImage b = (BufferedImage) get();
         	// This sets Image 0 which is the video previewer
 	        m_compImagePanel.setImage(0, b);
+	   //     if (((watchmonitor++)%300)== 0) {
+	   //     	if (Capture.monitor == lastmonitor)
+	    //    	{
+	    //    		System.out.println("Force restart?");
+	    //    		doFrameClose();
+	   //     	}
+	   //    	else
+	  //      	{
+	        	//	System.out.println(".");
+	  //      	}
+	  //      	lastmonitor = Capture.monitor;
+	  //      }
         }
 
       };
@@ -1923,7 +2117,6 @@ private void doFrameShot()
 {
 	if (m_playFrame > m_lastFrame)
 	{
-//		System.out.println("doFrameShot("+ m_playFrame + " > " + m_lastFrame+")");
 		m_playtimer.stop();
 		m_playtimer = null;
 	}
@@ -1936,7 +2129,6 @@ private void doFrameShot()
 		}
 		try
 		{
-			
 		  img = m_prj.getFrame(m_playFrame);
 		  m_leftImagePanel.setImage(0, img);
 		}
@@ -2037,28 +2229,49 @@ private void doFrameShot()
   }
   /* 320ms  160ms   80ms   40ms   20ms  */
   public void slower()
-  {	  
-	  if (movieButton == 1 || startButton == 1)
-	  	{
-	  	  resetMessage();
-	  	  return;
-	  	}
-	  	if (fps > SLOWEST_FPS)
-	  	{
-	  		fps = fps/2;
-	  		newFilmStripSize(fps);
-	  		if (PLAY_FRAME_TIMEOUT < 319)	PLAY_FRAME_TIMEOUT *= 2; 
-//		  	setPlayTimer(PLAY_FRAME_TIMEOUT);  
-	  	}
+  {	
+	  if (movieButton == 1 || startButton == 1 || uploadStatus == 1)
+	  {
+	     resetMessage();
+	  	 return;
+	  }
+	  if (playButton == 1) 
+	  {
+		 stopMovie();
+         resetMessage();
+         labE.setText(m_lastFrameLabelE);
+         labS.setText(m_lastFrameLabelS);
+         m_hSplitPane.setDividerLocation(m_prj.getHDivLoc());
+         m_leftInner.setBorder(new EmptyBorder(150, 40, 0, 40));
+         return;
+	  }
+	  if (fps > SLOWEST_FPS)
+	  {
+	     fps = fps/2;
+	  	 newFilmStripSize(fps);
+	  	 if (PLAY_FRAME_TIMEOUT < 319)	PLAY_FRAME_TIMEOUT *= 2; 
+//		 setPlayTimer(PLAY_FRAME_TIMEOUT);  
+	  }
   }
   
   public void faster()
   {
-	  	if (movieButton == 1 || startButton ==1)
+	 //  otherButton = 1;
+	  	if (movieButton == 1 || startButton == 1 || uploadStatus == 1)
 	  	{
 	  	  resetMessage();
 	  	  return;
 	  	}
+		if (playButton == 1) 
+		{
+		   stopMovie();
+	       resetMessage();
+	       labE.setText(m_lastFrameLabelE);
+	       labS.setText(m_lastFrameLabelS);
+	       m_hSplitPane.setDividerLocation(m_prj.getHDivLoc());
+	       m_leftInner.setBorder(new EmptyBorder(150, 40, 0, 40));
+	       return;
+		}
 	  	if (fps < FASTEST_FPS)
 	  	{
 	  		fps = fps*2;
@@ -2070,6 +2283,17 @@ private void doFrameShot()
   
   public void movie()
   {
+	  if (uploadStatus == 1) { resetMessage(); return; }
+	  if (playButton == 1) 
+	  {
+		 stopMovie();
+         resetMessage();
+         labE.setText(m_lastFrameLabelE);
+         labS.setText(m_lastFrameLabelS);
+         m_hSplitPane.setDividerLocation(m_prj.getHDivLoc());
+         m_leftInner.setBorder(new EmptyBorder(150, 40, 0, 40));
+         return;
+	  }
 	  if (movieButton == 0)
 	  {
 		  System.out.println("First time Movie button was pressed");
@@ -2086,6 +2310,9 @@ private void doFrameShot()
 		  movieDialog.pack();
 		  movieMessage.setVisible(true);
 		  movieDialog.setVisible(true);
+		  Date date = new Date();
+		  DateFormat dateFormat = new SimpleDateFormat("ddMMM_HH_mm_ss");
+		  movieName = "mov"+dateFormat.format(date)+".wmv";
 //		  repaint();
 	  }
 	  else
@@ -2095,29 +2322,92 @@ private void doFrameShot()
 		  movieMessage = new JLabel(m_MakingMovieMessage);
 		  movieMessage.setBackground(colorA);
 		  movieDialog.setContentPane(movieMessage);
+		  movieDialog.setLocation(SCREENWIDTH/2-200,SCREENHEIGHT/2-200);
+		  movieDialog.setBounds(500,400,640,400);
 		  movieDialog.setVisible(true);
 		  movieDialog.repaint();
+		  // Send the movie if there are more frames than the last time it was sent
+		  // OR if the MovieNumber is different
+		  // OR if the Movie is exactly the same as one sent, but the speed has been changed
+		  if (       m_lastFrame != m_lastFrameSent
+				  || m_lastMovieNum != movieNum
+				  ||(m_lastFrame == m_lastFrameSent && m_lastMovieNum == movieNum && speedSent != fps))
+		  {
 		  Date date = new Date();
-		  DateFormat dateFormat = new SimpleDateFormat("MMddyyHH_mm_ss");
-		  String movieFile = "C:/Apache2/htdocs/Movies/mov" +
-		    					dateFormat.format(date)+".wmv";
+		  DateFormat dateFormat = new SimpleDateFormat("ddMMM_HH_mm_ss");
+		  movieName = "mov"+dateFormat.format(date)+".wmv";
+		  String movieFile = "C:/Apache2/htdocs/Movies/" + movieName;
 		  System.out.println("Create Movie in File: ["+movieFile+"]");
 		  createMovie(movieFile);
 		  mailMovie(movieFile);
+		  m_lastFrameSent = m_lastFrame;
+		  m_lastMovieNum = movieNum;
+		  speedSent = fps;
+		  }
+		  else
+		  {
+		    System.out.println("Refusing to re-send the same movie.");
+		  }
 		  resetMessage();
 	  }
   }
   public void resetMessage()
   {
-	  movieButton = 0;
-	  startButton = 0;
+	  if (movieReportDialog != null)
+	  {
+		  movieReportDialog.dispose();
+		  movieReportMessage = null;
+		  movieReportDialog = null;
+		  repaint();
+	  }
 	  if (movieDialog != null)
 		  {
 		  	movieDialog.dispose();
 		  	movieMessage = null;
 		  	movieDialog = null;
+		  	if (otherButton == 0)
+		  	{
+		  	movieReportText =
+		 		"<html><body style=\"font-family: 'Trebuchet MS'\"><center><pre>\n\n</pre>" +
+		 		ENGLISH +
+		 		"<h1>&nbsp;&nbsp;&nbsp;"      +
+		 		"Your movie was uploaded as " +
+		 		movieName +
+		 		"&nbsp;&nbsp;&nbsp;</h1>"     +
+		 		"<pre>\n</pre>"			  +
+		 		"<h1>&nbsp;&nbsp;&nbsp;"	  +
+		 		" to lifeandscience.org/movieratios" +
+		 		"&nbsp;&nbsp;&nbsp;</h1>"	  +
+		 		"<pre>\n\n\n</pre>"			  +
+		 		SPANISH +
+		 		"<h1>&nbsp;&nbsp;&nbsp;"      +
+		 		"Tu película se ha subido como " +
+		 		movieName + 
+		 		" a lifeanscience.org/movieratios." +
+		 		"&nbsp;&nbsp;&nbsp;</h1>"     +
+		 		"<pre>\n</pre>"			  +
+		 		"<h1>&nbsp;&nbsp;&nbsp;"	  +
+		 		"lifeandscience.org/movieratios" +
+		 		"&nbsp;&nbsp;&nbsp;</h1>"	  +
+		 		"<pre>\n</pre></center></body></html>";
+				  movieReportMessage = new JLabel(movieReportText);
+				  movieReportMessage.setVisible(false);
+				  movieReportMessage.setBackground(colorA);
+				  movieReportDialog = new JFrame();
+				  movieReportDialog.setVisible(false);
+				  movieReportDialog.setContentPane(movieReportMessage);
+				  movieReportDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+				  movieReportDialog.setLocation(SCREENWIDTH/2-400,SCREENHEIGHT/2-200);
+				  movieReportDialog.setBackground(colorA);
+				  movieReportDialog.pack();
+				  movieReportMessage.setVisible(true);
+				  movieReportDialog.setVisible(true);
+				  uploadStatus = 1;
 		  	repaint();
+		  	}
 		  }
+	  else 	uploadStatus = 0;
+
 
  	  if (startDialog != null)
  	  {
@@ -2126,11 +2416,51 @@ private void doFrameShot()
  	  	startDialog = null;
  	  	repaint();
  	  }
-
+ 	  if (playDialog != null)
+ 	  {
+ 	  	playDialog.dispose();
+ 	  	playMessage = null;
+ 	  	playDialog = null;
+ 	  	repaint();
+ 	  }
+ 	  nowplaying = 0;
+	  movieButton = 0;
+	  startButton = 0;
+	  playButton = 0;
+	  playAgainButton = 0;
+	  otherButton = 0;
+  }
+  
+  //newstuff
+  public void resetPlay()
+  {
+ 	  if (playDialog != null)
+ 	  {
+ 	  	playDialog.dispose();
+ 	  	playMessage = null;
+ 	  	playDialog = null;
+ 	  	repaint();
+ 	  }
+  }
+  
+  public void stopMovie()
+  {
+	  m_playFrame = m_lastFrame;
+	  nowplaying = 0;
   }
   
 public void nextMovie()
   {
+	  if (playButton == 1) 
+	  {
+		 stopMovie();
+         resetMessage();
+         labE.setText(m_lastFrameLabelE);
+         labS.setText(m_lastFrameLabelS);
+         m_hSplitPane.setDividerLocation(m_prj.getHDivLoc());
+         m_leftInner.setBorder(new EmptyBorder(150, 40, 0, 40));
+         return;
+	  }
 	  if (startButton == 0)
 	  {
 		  System.out.println("First time Start button was pressed");
@@ -2147,41 +2477,55 @@ public void nextMovie()
 		  startDialog.pack();
 		  startMessage.setVisible(true);
 		  startDialog.setVisible(true);
-//		  repaint();
 	  }
 	  else
 	  {
+	    resetMessage();
 		if(m_timer != null)	{ m_timer.stop(); m_timer = null;}
 		if(m_playtimer != null)	{ m_playtimer.stop(); m_playtimer = null;}
-
 		setCurFrame(0);
 		setPrevFrame(0);
-		resetMessage();
 		fps = 12;
-  		newFilmStripSize(fps);  
-    	Process p = null;
-    	try {
-			p = Runtime.getRuntime().exec(
-"rm.exe c:/TEMP/defaultProject/dp/Frames/Frame*");
-		  } catch (IOException e) {
-			System.out.println("Failed to delete Frames");
-		  }
-      //System.out.println("Ready to call 'waitFor' on RM process");
-	      try {	p.waitFor(); } catch (InterruptedException e) {}
-      try {
-		p = Runtime.getRuntime().exec(
-"cp.exe c:/TEMP/defaultProject/dp/dp.new c:/TEMP/defaultProject/dp/dp.smp");
-	} catch (IOException e) {
-		System.out.println("Failed to copy initialized project file");
-	}
+  		newFilmStripSize(fps);
 
-//      System.out.println("Ready to call 'waitFor' on CP process");
-      try {	p.waitFor(); } catch (InterruptedException e) {
-		System.out.println("Error waiting for file copy exec to complete");
-      }
-      System.out.println("Empty Project File should be in place "+ p.exitValue());
-	  setPlayTimer(PLAY_FRAME_TIMEOUT);  
-	  try
+    	Process p = null;
+    	movieNum++;
+    	try 
+    	{
+			p = Runtime.getRuntime().exec(
+            "rm.exe c:/TEMP/defaultProject/dp/Frames/Frame*");
+		} 
+    	catch (IOException e) 
+		{
+			System.out.println("Failed to delete Frames");
+		}
+        //System.out.println("Ready to call 'waitFor' on RM process");
+	    try 
+	    {	
+	    	p.waitFor(); 
+	    } 
+	    catch (InterruptedException e) {}
+        try 
+        {
+		   p = Runtime.getRuntime().exec(
+          "cp.exe c:/TEMP/defaultProject/dp/dp.new c:/TEMP/defaultProject/dp/dp.smp");
+	    } 
+        catch (IOException e) 
+        {
+		  System.out.println("Failed to copy initialized project file");
+	    }
+        //System.out.println("Ready to call 'waitFor' on CP process");
+        try 
+        {	
+        	p.waitFor(); 
+        } 
+        catch (InterruptedException e) 
+        {
+		   System.out.println("Error waiting for file copy exec to complete");
+        }
+        System.out.println("Empty Project File should be in place "+ p.exitValue());
+	    setPlayTimer(PLAY_FRAME_TIMEOUT); 
+	    try
 	  	{
 		  setProject(new Project(m_projectFileName));
 	  	}
@@ -2190,18 +2534,37 @@ public void nextMovie()
 	  		System.out.println("Failed to reload Empty Project");
 	  	}
 	  }
-	  	
   }
   
-
   public void takeAPicture()
   {
- 	  if (movieButton == 1 || startButton==1) { resetMessage(); return; }
+ 	  if (movieButton == 1 || startButton == 1 || uploadStatus == 1) { resetMessage(); return; }
+	  if (playButton == 1) 
+	  {
+		 stopMovie();
+         resetMessage();
+         labE.setText(m_lastFrameLabelE);
+         labS.setText(m_lastFrameLabelS);
+         m_hSplitPane.setDividerLocation(m_prj.getHDivLoc());
+         m_leftInner.setBorder(new EmptyBorder(150, 40, 0, 40));
+         return;
+	  }
 	  onCapture(1);
   }
+  
   public void deletePicture()
   {
- 	  if (movieButton == 1 || startButton==1) { resetMessage(); return; }
+ 	  if (movieButton == 1 || startButton==1 || uploadStatus == 1) { resetMessage(); return; }
+	  if (playButton == 1) 
+	  {
+		 stopMovie();
+         resetMessage();
+         labE.setText(m_lastFrameLabelE);
+         labS.setText(m_lastFrameLabelS);
+         m_hSplitPane.setDividerLocation(m_prj.getHDivLoc());
+         m_leftInner.setBorder(new EmptyBorder(150, 40, 0, 40));
+         return;
+	  }
 	  int newFrame = getCurFrame();
 	  if (newFrame > 0 && m_lastFrame > 0)
 	  {
@@ -2212,19 +2575,40 @@ public void nextMovie()
 	  m_filmPanel.position(getCurFrame());
 	  try
 	  {
-		  	m_leftImagePanel.setImage(0, m_prj.getFrame(m_lastFrame));
+		  m_leftImagePanel.setImage(0, m_prj.getFrame(m_lastFrame));
 	  }
 	  catch (Exception e) { e.printStackTrace(); }
 	  unlink(newFrame);
   }
   
+  //This of course plays the newstuff movie
   public void playPreview()
-  {
- 	  if (movieButton == 1 || startButton==1) { resetMessage(); return; }
+  {   
+	  if (uploadStatus == 1) { resetMessage(); return; }//NEW
+	  nowplaying = 1;
+	  if (playButton == 0)
+	  {
+	      if (movieButton == 1 || startButton==1 || uploadStatus == 1) { resetMessage(); return; }
+	      labE.setText(m_playFrameLabelE);	         
+	      m_hSplitPane.setDividerLocation(m_pref.getInt(PREF_HDIVLOC, 1780));
+	      m_leftInner.setBorder(new EmptyBorder(150, 400, 0, 400));
+	      
+	      m_capturing = false;
+	      m_playFrame = 1;
+	      setPlayTimer(PLAY_FRAME_TIMEOUT);
 
-	  m_capturing = false;
-	  m_playFrame = 1;
-	  setPlayTimer(PLAY_FRAME_TIMEOUT);  
+	      playButton = 1;
+	      playAgainButton = 1;
+	   
+	  }
+	  else if (playButton == 1 || playAgainButton == 1)
+	  {
+ 	      if (movieButton == 1 || startButton==1 || uploadStatus == 1) { resetMessage(); nowplaying = 0; return; }
+	      resetPlay();
+	      m_capturing = false;
+	      m_playFrame = 1;
+	      setPlayTimer(PLAY_FRAME_TIMEOUT);
+	  }
   }
 
   public void summarizeCaptureDevices()
@@ -2296,11 +2680,11 @@ public void nextMovie()
 
   public void createMovie(String movieFile)
   {
-  	Process p = null;
+//  	Process p = null;
 	  String cmd = FFMPEG + " -r " + fps + INFILES + OPTIONS + movieFile;
 	  System.out.println("Executing: " + cmd);
 		  try {
-			p = Runtime.getRuntime().exec(cmd);
+			Runtime.getRuntime().exec(cmd);
 		} catch (IOException e) {
 			System.out.println("Failed to execute ["+cmd+"]");
 		}
@@ -2416,37 +2800,29 @@ public void nextMovie()
 		fps = 12;
   		newFilmStripSize(fps);  
     	Process p = null;
-    	try {
-			p = Runtime.getRuntime().exec(
-"rm.exe c:/TEMP/defaultProject/dp/Frames/Frame*");
-		  } catch (IOException e) {
+    	
+    	try 
+    	{
+			p = Runtime.getRuntime().exec("rm.exe c:/TEMP/defaultProject/dp/Frames/Frame*");
+		} 
+    	catch (IOException e) 
+    	{
 			System.out.println("Failed to delete Frames");
-		  }
-      //System.out.println("Ready to call 'waitFor' on RM process");
-	      try {	p.waitFor(); } catch (InterruptedException e) {}
-	      /*
-      try {
-		p = Runtime.getRuntime().exec(
-"cp.exe c:/TEMP/defaultProject/dp/dp.new c:/TEMP/defaultProject/dp/dp.smp");
-	} catch (IOException e) {
-		System.out.println("Failed to copy initialized project file");
-	}
-
-//      System.out.println("Ready to call 'waitFor' on CP process");
-      try {	p.waitFor(); } catch (InterruptedException e) {
-		System.out.println("Error waiting for file copy exec to complete");
-      }
-      System.out.println("Empty Project File should be in place "+ p.exitValue());
-      */ 
-	  setPlayTimer(PLAY_FRAME_TIMEOUT);  
-	  try
-	  	{
-		  setProject(new Project(m_projectFileName));
-	  	}
-	  	catch (Exception e)
-	  	{
-	  		System.out.println("Failed to reload Empty Project");
-	  	}
+		}
+	   try 
+	   {
+		   p.waitFor(); 
+	   } 
+	   catch (InterruptedException e) {}
+	   setPlayTimer(PLAY_FRAME_TIMEOUT);  
+	   try
+	  	  {
+		    setProject(new Project(m_projectFileName));
+	  	  }
+	   catch (Exception e)
+	   {
+	  	  System.out.println("Failed to reload Empty Project");
+	   }
     }
 
   protected void paintComponent(Graphics g)
@@ -2485,19 +2861,19 @@ public void nextMovie()
 	  int SMTP_PORT = 25;
       boolean debug = false;
       
-      
       Properties props = new Properties();
-      props.put("mail.smtp.user", "movieratios");
+      props.put("mail.smtp.user", "mlsmovieratios");
       props.put("mail.smtp.host", "smtp.gmail.com");
       props.put("mail.smtp.auth", "true");
-      props.put("mail.smtp.starttls.enable","true");
+      props.put("mail.smtp.starttls.enable", "true");
       props.put("mail.debug", debug);
       props.put("mail.smtp.port", SMTP_PORT);
 
       Session session = Session.getDefaultInstance(props,
       new javax.mail.Authenticator() {
       protected PasswordAuthentication getPasswordAuthentication() {
-      return new PasswordAuthentication("movieratios", "sc13nc3!");
+      return new PasswordAuthentication("mlsmovieratios", "ilovemath");
+      //return new PasswordAuthentication("mlsmovieratios", "sc13nc3!");
       }
       });
       session.setDebug(debug);
@@ -2599,7 +2975,7 @@ public void nextMovie()
 			e.printStackTrace();
 			System.exit(1);
 		}
-Vector<?> plugins = m_pluginManager.getPlugins();
+//Vector<?> plugins = m_pluginManager.getPlugins();
 /*
 for(int i = 0; i < plugins.size(); i++)
 	System.out.println("Plugin " + i + ": " + ((Plugin)plugins.elementAt(i)).getDesc());
@@ -2662,7 +3038,7 @@ try
 
  public void checkCameras(String file)
   {
-	  	String result;
+//	  	String result;
 	  	byte[] buff = new byte[128];
   		FileInputStream fin;
   		m_oneCamera = false;
@@ -2686,13 +3062,16 @@ try
   		}
   }
 
-
+// Make video name unique (time of day/date)
+ 
   public void mailMovie(String movieFile)
   {
-	  String[] who = { "0msw0ywva5uh@m.youtube.com" };
+//	  String[] who = { "0msw0ywva5uh@m.youtube.com" };
+	  String[] who = { "mzkmdzah2rzj@m.youtube.com" };
+//	  String[] who = { "mlsmovieratios@gmail.com" };
 	  String message = "No Message Body";
-	  String subject = "NCMLS Animation ("+m_random+":"+m_seq+")";
-	  String from = "elizabethf@lifeandscience.org";
+	  String subject = movieFile;
+	  String from = "mlsmovieratios@gmail.com";
 
 	  try {
 		  postMail( who, subject, message, from, movieFile);

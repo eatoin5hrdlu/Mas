@@ -3,10 +3,10 @@ package com.mondobeyondo.stopmojo.capture;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GradientPaint;
+//import java.awt.Font;
+//import java.awt.GradientPaint;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
+//import java.awt.Graphics2D;
 import java.util.Vector;
 import java.lang.Math;
 
@@ -22,12 +22,12 @@ public class filmStrip extends JPanel
 	private static int SCREENHEIGHT = 768;
 	private static String idir;
 	private Vector<Pwb> shots; 
-	private String fnum;
+//	private String fnum;
 	private Pwb topsproket;
 	private Pwb botsproket;
 	private Vector<JPanel> spacer;
 	private int numspaces;
-	private JPanel filmspace;
+//	private JPanel filmspace;
 	private int nframes;
 	public SliderDemo m_speedLabel;
 	

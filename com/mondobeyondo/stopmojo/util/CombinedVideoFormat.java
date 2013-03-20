@@ -40,7 +40,7 @@
  */
 package com.mondobeyondo.stopmojo.util;
 
-import java.util.Vector;
+//import java.util.Vector;
 
 import javax.media.format.VideoFormat;
 
@@ -52,21 +52,22 @@ import javax.media.format.VideoFormat;
  */
 public class CombinedVideoFormat 
 {
-	private String
-	  m_encoding;
+//	private String
+//	  m_encoding;
 	
-  private Vector<?>
+ /*
+ 	private Vector<?>
 	    m_formats,
 		m_frameRates,
 		m_sizes;
   
-  public CombinedVideoFormat(String encoding)
+    public CombinedVideoFormat(String encoding)
   {
   	m_encoding = encoding;
   	m_formats = new Vector<Object>();
   	m_frameRates = new Vector<Object>();
   	m_sizes = new Vector<Object>();
-  }
+  }*/
   
   public void addFormat(VideoFormat format)
   {

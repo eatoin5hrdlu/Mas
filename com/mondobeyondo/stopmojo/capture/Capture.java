@@ -40,34 +40,41 @@
  */
 package com.mondobeyondo.stopmojo.capture;
 
-import java.awt.BorderLayout;
+//import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Frame;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+//import java.awt.GradientPaint;
+//import java.awt.Graphics;
+//import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+//import java.awt.event.KeyEvent;
+//import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+//import java.text.DateFormat;
+//import java.text.SimpleDateFormat;
+//import java.util.Date;
 import java.util.Properties;
+import java.util.Vector;
 import java.util.prefs.Preferences;
 
-import javax.mail.MessagingException;
+//import javax.mail.MessagingException;
+import javax.media.CaptureDeviceInfo;
+import javax.media.CaptureDeviceManager;
+import javax.media.Format;
 import javax.media.Manager;
+//import javax.media.format.VideoFormat;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+//import javax.swing.JFrame;
+//import javax.swing.JPanel;
+//import javax.swing.JSplitPane;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import com.mondobeyondo.stopmojo.util.SystemProperties;
-import com.sun.media.JMFSecurity;
-import com.sun.media.JMFSecurityManager;
+//import com.mondobeyondo.stopmojo.util.SystemProperties;
+//import com.sun.media.JMFSecurity;
+//import com.sun.media.JMFSecurityManager;
 
 /**
  * @author peter
@@ -89,6 +96,7 @@ public class Capture
 	  s_propFile = "capture.properties",
 	  PREF_LASTPRJFOLDER = "LastPrjFolder",
 	  PREF_LASTEXPORTFOLDER = "LastExportFolder";
+  public static int monitor;
   
   // RESPONSIVENESS OF BUTTONS CAN BE TUNED HERE
   private static final int MAIN_LOOP_DELAY = 30;
@@ -98,10 +106,10 @@ public class Capture
   private static final int MLS_B_CAPTURE = 0x1FF & (~0x04);
   private static final int MLS_B_FASTER  = 0x1FF & (~0x08);
   private static final int MLS_B_SLOWER  = 0x1FF & (~0x10);
-  private static final int MLS_B_CAM2    = 0x1FF & (~0x20);
+//  private static final int MLS_B_CAM2    = 0x1FF & (~0x20);
   private static final int MLS_B_CAM1    = 0x1FF & (~0x40);
   private static final int MLS_B_NEW     = 0x1FF & (~0x80);
-  private static final int MLS_B_MOVIE   = 0x1FF & (~0x100);
+  private static final int MLS_B_MOVIE   = 0x1FF & (~0x40); // using old 'CAM1' MOVIE was 0x1FF & (~0x100);
 	private static int ccam  = 0;
 	
   public static final boolean m_slider = false; // Frame rate Slider or Label
@@ -119,9 +127,9 @@ public class Capture
 		s_newIcon,
 		s_openIcon,
 		s_saveIcon,
-  	s_bigNewIcon,
-	  s_bigOpenIcon,
-	  s_bigSaveIcon,
+  	    s_bigNewIcon,
+	    s_bigOpenIcon,
+	    s_bigSaveIcon,
 		s_bigGridIcon,
 		s_playIcon,
 		s_stopIcon,
@@ -133,9 +141,9 @@ public class Capture
 		s_closeIcon,
 		s_bigCloseIcon;
 	
-    private static JMFSecurity jmfSecurity = null;
+ //   private static JMFSecurity jmfSecurity = null;
     
-    private static boolean securityPrivilege = false;
+ //   private static boolean securityPrivilege = false;
     
 	private static Properties
 	  s_prop;
@@ -174,7 +182,7 @@ public class Capture
 	{
 		return s_pref;
 	}
-
+/*
 	private static int getCurrentCam()
 	{
 		byte data[] = new byte[24];
@@ -196,13 +204,15 @@ public class Capture
 	    	return MLS_B_CAM2;
 	    }
 	}
-	
+	*/
 	@SuppressWarnings("unused")
 	public static void main(String[] args) 
 	{
 		s_pref = Preferences.userNodeForPackage(Capture.class);
 		s_prop = new Properties();
-	    ccam = getCurrentCam();
+		reportDevices();
+
+	    ccam = MLS_B_CAM1;
 		try
 		{
 			FileInputStream in = new FileInputStream(s_propFile);
@@ -260,8 +270,7 @@ public class Capture
 		props.setVisible(true);
 		*/
 		
-		f = new CaptureFrame("C:/TEMP/defaultProject/dp/dp.smp", true);
-			//	  				MLSButtons.labjackInstalled());
+		f = new CaptureFrame("C:/TEMP/defaultProject/dp/dp.smp", true);// MLSButtons.labjackInstalled());
 
 		Toolkit tk = Toolkit.getDefaultToolkit();  
 		int xSize = ((int) tk.getScreenSize().getWidth());  
@@ -289,6 +298,7 @@ public class Capture
 		System.out.println("Starting Loop...");
 		int b = 0;
 		int last = b;
+		monitor = 1;
 		while(true)
 		{
 			f.requestFocusInWindow();
@@ -301,40 +311,53 @@ public class Capture
 			}
 			try 				{ b = mlsbuttons.getButtons();  }
 			catch(Exception be) { be.printStackTrace();			}
+			monitor++;
+//			if ((monitor % 300)==0) {
+//				  Date date = new Date();
+//				  DateFormat dateFormat = new SimpleDateFormat("MMddyyHH_mm_ss");
+//					System.out.println(dateFormat.format(date)+" ("+last+","+b+")");
+//			}
+
 			if ( b != last )
 			{
+//				System.out.println(" ("+last+","+b+")");
 
 			//	System.out.println("buttons = " + b);
 				switch(b)
 				{
 				case MLS_B_CAPTURE:
 					System.out.println("CAPTURE");
+					CaptureFrame.otherButton = 1;
 					f.takeAPicture();
 					break;
 				case MLS_B_DELETE:
 					System.out.println("DELETE");
+					CaptureFrame.otherButton = 1;
 					f.deletePicture();
 					break;
 				case MLS_B_PLAY:
+					CaptureFrame.otherButton = 1;
 					System.out.println("PLAY");
-					f.playPreview();
+				    f.playPreview();
 					break;
 				case MLS_B_SLOWER:
 					System.out.println("SLOWER");
+					CaptureFrame.otherButton = 1;
 					f.slower(); 
 					break;
 				case MLS_B_FASTER:
 					System.out.println("FASTER");
+					CaptureFrame.otherButton = 1;
 					f.faster();
 					break;
-				case MLS_B_CAM1:
+/*				case MLS_B_CAM1:
 				    if (CaptureFrame.movieButton == 1 || CaptureFrame.startButton == 1)
 					{
 					    f.resetMessage();
 					}
 				    else
 					{
-					    if (f.m_oneCamera)
+					    if (CaptureFrame.m_oneCamera) //f. not static enough
 						{
 						    System.out.println("There is only one Camera");
 						}
@@ -360,7 +383,7 @@ public class Capture
 					}
 				    else
 					{
-					    if (f.m_oneCamera)
+					    if (CaptureFrame.m_oneCamera)
 						{
 						    System.out.println("There is only one Camera");
 						}
@@ -379,10 +402,11 @@ public class Capture
 						}
 					}
 					break;
-					
+	*/				
 				case MLS_B_MOVIE:
 				    if (CaptureFrame.startButton == 1)
 					{
+				    	CaptureFrame.otherButton = 0;
 					    f.resetMessage();
 					}
 				    else
@@ -395,6 +419,7 @@ public class Capture
 				case MLS_B_NEW:
 				    if (CaptureFrame.movieButton == 1)
 					{
+				    	CaptureFrame.otherButton = 1;
 					    f.resetMessage();
 					}
 				    else
@@ -475,12 +500,12 @@ public class Capture
 			"About " + Capture.s_appName, JOptionPane.INFORMATION_MESSAGE); 
 	}
 	
-  public static void exit(int exitVal)
-  {
+    public static void exit(int exitVal)
+    {
 		f.dispose();
 		f = null;
 		System.exit(exitVal);
-  }
+    }
   
 	public static void handleError(Component parent, String message, String title, Exception e, boolean fatal)
 	{ 
@@ -549,5 +574,27 @@ public class Capture
 			mess = mess.substring(0, 1000);
 		  
 		handleError(parent, mess, title, e, fatal); 
+	}
+	
+	public static void reportDevices()
+	{
+		Vector<?> devs = CaptureDeviceManager.getDeviceList(null);
+		System.out.println("");
+		for(int i = 0; i < devs.size(); i++)
+		{
+		CaptureDeviceInfo
+		  c = (CaptureDeviceInfo)devs.elementAt(i);
+		System.out.println("Available Device "+i+" "+ c.getName());
+			
+			Format[]
+		    formats = c.getFormats();
+			System.out.println("Format length is "+ formats.length);
+			for(int j = 0; j < formats.length; j++)
+			{
+				System.out.println("FORMAT " + j + formats[j].toString());
+			}
+		
+		}
+		System.out.println("");
 	}
 }

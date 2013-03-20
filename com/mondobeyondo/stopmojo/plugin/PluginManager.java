@@ -54,7 +54,7 @@ import java.util.Vector;
  */
 public class PluginManager 
 {
-	private Vector
+	private Vector<Plugin>
 	  m_plugins;
 	
   public PluginManager()
@@ -63,7 +63,7 @@ public class PluginManager
   
   public int LoadPlugins(String path) throws Exception
 	{
-  	m_plugins = new Vector();
+  	m_plugins = new Vector<Plugin>();
   	
   	File
 		  dir = new File(path);
@@ -85,8 +85,9 @@ public class PluginManager
       	URLClassLoader loader = new URLClassLoader(new URL[] {new URL("file:///" + pluginFile.getAbsolutePath())}, this.getClass().getClassLoader());
 //  System.out.println("loading class " + files[i].substring(0, files[i].indexOf(".jar")));    	
 //        Class plugin = loader.loadClass(files[i].substring(0, files[i].indexOf(".jar")));
-    	  Class<Object> plugin = (Class<Object>) Class.forName(files[i].substring(0, files[i].indexOf(".jar")), true, loader);
-  	  	m_plugins.add(plugin.newInstance());
+    	  @SuppressWarnings("unchecked")
+		Class<Object> plugin = (Class<Object>) Class.forName(files[i].substring(0, files[i].indexOf(".jar")), true, loader);
+  	  	m_plugins.add((Plugin) plugin.newInstance());
 			}
   	  catch(UnsatisfiedLinkError er)
 			{
@@ -102,20 +103,20 @@ public class PluginManager
   	return m_plugins.size();
 	}
   
-  public Vector getPlugins()
+  public Vector<Plugin> getPlugins()
   {
   	return m_plugins;
   }
   
-  public Vector getPlugins(Class<?> c)
+  public Vector<Plugin> getPlugins(Class<?> c)
   {
-    Vector
-		  v = new Vector();
+    Vector<Plugin>
+		  v = new Vector<Plugin>();
     
     for(int i = 0; i < m_plugins.size(); i++)
     {
     	if(c.isAssignableFrom(m_plugins.elementAt(i).getClass()))
-    		v.add(m_plugins.elementAt(i));
+    		v.add((Plugin)m_plugins.elementAt(i));
     }
     	
     return v;

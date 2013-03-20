@@ -779,7 +779,7 @@ public class Util
 			Sufx;
 
 		int
-			Month,
+			//Month,
 			Day,
 			Year;
 
@@ -789,7 +789,7 @@ public class Util
 		if(nf instanceof DecimalFormat)
 			((DecimalFormat)nf).applyPattern("####");
 
-		Month = atoi(Date.substring(0, 2));
+		// Month = atoi(Date.substring(0, 2));
 		Day = atoi(Date.substring(3, 5));
 		Year = atoi(Date.substring(6, 8));
 		if(Year < 50)
@@ -1047,8 +1047,8 @@ public class Util
 		boolean
 			BadDate;
   	  
-		char
-			Dlmtr;
+//		char
+//			Dlmtr;
 	    
 		String
 			DayStr = "",
@@ -1354,7 +1354,7 @@ public class Util
 		return value;
   }
   
-  public static int parseCSVLine(String line, char delim, char quote, char escape, Vector values)
+  public static int parseCSVLine(String line, char delim, char quote, char escape, Vector<String> values)
   {
   	values.clear();
   	

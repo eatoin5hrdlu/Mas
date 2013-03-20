@@ -60,11 +60,13 @@ public class RTypeDocumentFilter extends DocumentFilter
 	  m_rtype,
   	m_valset;
 	  
-  private double
+  @SuppressWarnings("unused")
+private double
 	  m_min,
 	  m_max;
 	  
-  private int
+  @SuppressWarnings("unused")
+private int
 	  m_maxlen,
 	  m_ints,
 	  m_decs,

@@ -221,7 +221,8 @@ public class QTCapturePlugin implements CapturePlugin
     		
     		m_grabber.startRecord();    		
         
-        ActionListener timerCallback =
+        @SuppressWarnings("unused")
+		ActionListener timerCallback =
           new ActionListener( ) {
               public void actionPerformed(ActionEvent e) 
               {

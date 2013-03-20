@@ -41,7 +41,7 @@
 package com.mondobeyondo.stopmojo.capture.JMFCapturePlugin;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+//import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -56,7 +56,7 @@ import javax.media.format.*;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+//import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -90,11 +90,11 @@ public class CaptureDeviceDialog extends BasicDialog implements ActionListener
 		m_formatComboBox;
   
   private String
-	  m_devName = "",
-		m_formatEncoding;
+	  m_devName = "";
+//		m_formatEncoding;
   
-  private Dimension
-	  m_size;
+ // private Dimension
+//	  m_size;
   
   private int
 	  m_format = -1,
@@ -142,16 +142,21 @@ public class CaptureDeviceDialog extends BasicDialog implements ActionListener
 		{
 			CaptureDeviceInfo
 			  c = (CaptureDeviceInfo)devs.elementAt(i);
+			System.out.println("pbr Available Device "+i+" "+ c.getName());
 				
 			Format[]
 		    formats = c.getFormats();
-				
+			System.out.println("Format length is "+ formats.length);
 			for(int j = 0; j < formats.length; j++)
+			{
+				System.out.println("FORMAT " + j + formats[j].toString());
 				if(formats[j] instanceof VideoFormat)
 				{
 					m_devices.add(c);
+					System.out.println("DEVICE-INFO" + m_devices.toString());
 					break;
 				}
+			}
 		}
 		
 		JPanel padPanel = new JPanel();

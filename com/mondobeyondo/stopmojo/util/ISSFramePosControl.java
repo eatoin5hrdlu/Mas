@@ -55,11 +55,12 @@ import javax.media.control.FramePositioningControl;
  */
 public class ISSFramePosControl implements FramePositioningControl 
 {
+    @SuppressWarnings("unused")
 	private long
 	  m_frameDuration;
 	
-	private ImageFrameSource
-	  m_source;
+//	private ImageFrameSource
+//	  m_source;
 	
 	private ImageSourceStream
 	  m_stream;
@@ -67,7 +68,7 @@ public class ISSFramePosControl implements FramePositioningControl
 	public ISSFramePosControl(float frameRate, ImageFrameSource source, ImageSourceStream stream)
 	{
     m_frameDuration = (long)(source.getCount() / frameRate);
-    m_source = source;
+  //  m_source = source;
     m_stream = stream;
 	}
 	

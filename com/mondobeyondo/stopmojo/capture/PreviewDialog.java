@@ -79,7 +79,7 @@ public class PreviewDialog extends BasicDialog implements ChangeListener
 	  m_curFrame,
 		m_numFrames,
 		m_delay;
-	
+	@SuppressWarnings("unused")
 	private boolean
 	  m_playing;
 	
@@ -204,7 +204,9 @@ public class PreviewDialog extends BasicDialog implements ChangeListener
 		
 		return panel;
   }
-  private JPanel makeLeftPanel()
+  
+  @SuppressWarnings("unused")
+private JPanel makeLeftPanel()
   {
   	JPanel
 		  panel, butPanel;

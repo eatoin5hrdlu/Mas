@@ -7,8 +7,9 @@ import java.util.Enumeration;
 
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.plaf.basic.BasicGraphicsUtils;
+//import javax.swing.plaf.basic.BasicGraphicsUtils;
 
+@SuppressWarnings("serial")
 public class SliderDemo extends JPanel
                         implements ActionListener,
                                    WindowListener,
@@ -18,7 +19,9 @@ public class SliderDemo extends JPanel
     static final int FPS_MAX = 24;
     static final int FPS_INIT = 12;    //initial frames per second
     public static JSlider framesPerSecond;
-    public JLabel numFrames;
+    public JLabel numFramesE;
+    public JLabel numFramesS;
+    public JLabel totalNum;
     public int fps;
     
     public SliderDemo(int size, int position) {
@@ -26,17 +29,39 @@ public class SliderDemo extends JPanel
 
         int tfrs = position - 1;
         if (tfrs < 0) { tfrs = 0; }
-        numFrames = new JLabel(tfrs+" Total");
-		numFrames.setFont( new Font("Trebuchet MS",Font.BOLD, 26));
-        numFrames.setBounds(1200,10,1300,40);
-		add(numFrames);
+        totalNum = new JLabel(" "+tfrs);
+        totalNum.setFont( new Font("Trebuchet MS",Font.BOLD, 42));
+        totalNum.setBounds(1010,24,100,60);
+        totalNum.setForeground(new Color(0,0,0));
+        add(totalNum);       
+        numFramesE = new JLabel("Total Frames");
+		numFramesE.setFont( new Font("Trebuchet MS",Font.BOLD, 26));
+        numFramesE.setBounds(1100,20,400,40);
+        numFramesE.setForeground(CaptureFrame.colorEnglish);
+		add(numFramesE);
+        numFramesS = new JLabel("Fotogramas en total");
+		numFramesS.setFont( new Font("Trebuchet MS",Font.BOLD, 26));
+        numFramesS.setBounds(1100,50,400,40);
+        numFramesS.setForeground(CaptureFrame.colorSpanish);
+		add(numFramesS);
 		
-	    JLabel sliderLabel = new JLabel("            " +
-	    	        size +
-	    	        "   Frames    Per    Second                                                 Frames", JLabel.CENTER);
+		JLabel speedLabel = new JLabel(" "+ size);
+		speedLabel.setFont( new Font("Trebuchet MS",Font.BOLD, 42));
+		speedLabel.setForeground(new Color(0,0,0));
+		speedLabel.setBounds(440,20,100,50);
+		add(speedLabel);
+	    JLabel sliderLabel = new JLabel("Frames Per Second", JLabel.CENTER);
 	    			sliderLabel.setFont( new Font("Trebuchet MS",Font.BOLD, 26));
-	    	        sliderLabel.setBounds(300,30,1100,60);
+	    	        sliderLabel.setBounds(340,10,600,50);
+	    	        sliderLabel.setForeground(CaptureFrame.colorEnglish);
+	    	        
         add(sliderLabel);
+	    JLabel sliderLabelS = new JLabel("Fotogramas por Segundo", JLabel.CENTER);
+    			sliderLabelS.setFont( new Font("Trebuchet MS",Font.BOLD, 26));
+    	        sliderLabelS.setBounds(375,40,600,50);
+    	        sliderLabelS.setForeground(CaptureFrame.colorSpanish);
+    	        
+        add(sliderLabelS);
         sliderLabel.setVisible(true);
      //   Icon icon = new ImageIcon("images/mlspointer.gif");
       //  UIDefaults defaults = UIManager.getDefaults();
@@ -59,9 +84,10 @@ public class SliderDemo extends JPanel
         framesPerSecond.setFont(font);
 
 
-        Dictionary d = framesPerSecond.getLabelTable();
+        @SuppressWarnings("unchecked")
+		Dictionary<Integer,JLabel> d = framesPerSecond.getLabelTable();
 
-        for (Enumeration e = d.keys() ; e.hasMoreElements() ; )
+        for (Enumeration<Integer> e = d.keys() ; e.hasMoreElements() ; )
         {
         	Object key = e.nextElement();
         	String k = key.toString();
@@ -121,7 +147,8 @@ public class SliderDemo extends JPanel
     public void setNumFrames(int fs)
     {
     	int n = fs-1;
-    	numFrames.setText(n + " Total");
+    	numFramesE.setText(n + " Total");
+    	numFramesS.setText(n + " Total");
     }
     //Called when the Timer fires.
     public void actionPerformed(ActionEvent e) {
@@ -133,7 +160,8 @@ public class SliderDemo extends JPanel
      * this method should be invoked from the
      * event-dispatching thread.
      */
-    private static void createAndShowGUI() {
+    @SuppressWarnings("unused")
+	private static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("SliderDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -30,7 +30,7 @@ public class MLSButtons {
 					}
 				catch (UnsatisfiedLinkError e)
 					{
-						System.err.println("Library load failed.\n" + e);
+						System.err.println("Library load failed. Where is LJUDJava.dll?\n" + e);
 						System.exit(1);
 					}
 
@@ -70,7 +70,8 @@ public class MLSButtons {
 		 //Now add requests that will be processed every iteration of the loop.
 		 //Read CIO digital lines.
 			intErrorcode = LJUD.AddRequest (intHandle[0], LJUD.LJ_ioGET_DIGITAL_PORT, 0, 0, 9, 0);
-			ErrorHandler(intErrorcode, 0, new Exception());		
+			ErrorHandler(intErrorcode, 0, new Exception());	
+			System.err.println("End of LabJack initialization");
     }
 
 	public static void ErrorHandler(int Errorcode, long Iteration, Exception excep) {

@@ -60,7 +60,7 @@ public class ProjectFrameSource implements ImageFrameSource
 	
 	private int
 	  m_width = 320,
-		m_height = 240;
+	  m_height = 240;
 	
 	public ProjectFrameSource(Project project)
 	{
